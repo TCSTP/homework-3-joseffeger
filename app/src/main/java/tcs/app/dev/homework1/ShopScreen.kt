@@ -1,5 +1,7 @@
 package tcs.app.dev.homework1
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +10,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import tcs.app.dev.homework1.data.Cart
 import tcs.app.dev.homework1.data.Discount
+import tcs.app.dev.homework1.data.Item
+import tcs.app.dev.homework1.data.MockData
 import tcs.app.dev.homework1.data.Shop
+import tcs.app.dev.homework1.views.CartIcon
+import tcs.app.dev.homework1.views.discounts.DiscountList
+import tcs.app.dev.homework1.views.items.ItemList
+import tcs.app.dev.homework1.views.ScaffoldWrapper
 
 /**
  * # Homework 3 — Shop App
@@ -68,9 +76,9 @@ import tcs.app.dev.homework1.data.Shop
  *        button to return to the shop.
  *
  * - **Bottom bar**:
-*       - In Shop/Discounts, show a 2-tab bottom bar to switch between **Shop** and **Discounts**.
-*       - In Cart, hide the tab bar and instead show the cart bottom bar with the total and **Pay**
-*         action as described above.
+ *       - In Shop/Discounts, show a 2-tab bottom bar to switch between **Shop** and **Discounts**.
+ *       - In Cart, hide the tab bar and instead show the cart bottom bar with the total and **Pay**
+ *         action as described above.
  *
  * ## Hints
  * - Keep your cart as a single source of truth and derive counts/price from it.
@@ -94,10 +102,45 @@ import tcs.app.dev.homework1.data.Shop
  */
 @Composable
 fun ShopScreen(
-    shop: Shop,
+    shop: Shop = MockData.ExampleShop,
+    cart: Cart = Cart(shop = MockData.ExampleShop),
     availableDiscounts: List<Discount>,
+    addItemToCart: (Item) -> Unit,
+    addDiscountToCart: (Discount) -> Unit = {},
+    onShowCart: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
 
+    var selectedTab by rememberSaveable { mutableStateOf(0) }
+
+    ScaffoldWrapper(
+        selectedIndex = selectedTab,
+        onTabSelected = { index -> selectedTab = index },
+        rightActionIcon = { modifier ->
+            CartIcon(
+                cart = cart,
+                modifier = modifier
+            )
+        },
+        onRightIconClick = onShowCart,
+        modifier = modifier,
+        content = { paddingValues ->
+            Crossfade(targetState = selectedTab, animationSpec = tween(durationMillis = 250)) { tab ->
+                when (tab) {
+                    0 -> ItemList(
+                        paddingValues = paddingValues,
+                        shop = shop,
+                        addItemToCart = addItemToCart
+                    )
+                    1 -> DiscountList(
+                        paddingValues = paddingValues,
+                        cart = cart,
+                        discounts = availableDiscounts,
+                        addDiscountToCart = addDiscountToCart
+                    )
+                    else -> {}
+                }
+            }
+        }
+    )
 }
