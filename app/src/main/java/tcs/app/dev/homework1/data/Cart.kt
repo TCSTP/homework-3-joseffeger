@@ -5,6 +5,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.getValue
+import kotlin.plus
 
 /**
  * I made the cart and every type inside [Parcelable],
@@ -54,6 +55,14 @@ data class Cart(
 }
 
 fun Cart.update(other: Pair<Item, UInt>): Cart = copy(items = items + other)
+
+fun Cart.set(pair: Pair<Item, UInt>): Cart {
+    return if (pair.second == 0u) {
+        copy(items = items - pair.first)
+    } else {
+        copy(items = items + pair)
+    }
+}
 
 operator fun Cart.plus(other: Pair<Item, UInt>): Cart {
     val (item, amount) = other

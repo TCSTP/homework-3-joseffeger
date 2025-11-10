@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import tcs.app.dev.R
 
-private data class UIItem(
+data class UIItem(
     val item: Item,
     val price: Euro,
     @param:DrawableRes val image: Int,

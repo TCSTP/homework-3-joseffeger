@@ -15,8 +15,11 @@
     <string name="title_discounts">Discounts</string>
 
     <string name="label_shop">Shop</string>
+    <string name="label_cart">Cart</string>
     <string name="label_discounts">Discounts</string>
+    <string name="label_discount">Discount</string>
     <string name="label_pay">Pay</string>
+    <string name="label_amount">Amount</string>
 
     <string name="description_go_to_cart">Go to cart</string>
     <string name="description_go_to_shop">Go to shop</string>
@@ -25,8 +28,13 @@
     <string name="description_decrease_amount">Decrease Amount</string>
     <string name="description_increase_amount">Increase Amount</string>
 
+    <string name="tab_description_shop">Shop tab</string>
+    <string name="tab_description_discounts">Discounts tab</string>
+
     <string name="more_than_99">99+</string>
     <string name="total_price">Total: %1$s</string>
+    <string name="total_label">Total</string>
+
     <string name="pay_n_items_and_get">Pay %1$s %2$ss and get %3$s</string>
     <string name="amount_off">%1$s off!</string>
     <string name="percentage_off">%1$s%% off!</string>
